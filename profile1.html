@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MANUFLIX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        .hero-gradient {
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.8) 100%);
+        }
+        .scroll-container {
+            scrollbar-width: none;
+        }
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-gradient-to-b from-black to-transparent px-4 py-3 md:px-12 flex justify-between items-center">
+        <div class="flex items-center">
+            <img src="Mrudula_logo.png" width="250px" height="280px" alt="Netflix Logo" class="h-8 md:h-10">
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="relative">
+                <i data-feather="search" class="text-white h-5 w-5"></i>
+            </div>
+            <div class="hidden md:flex space-x-4">
+                <a href="profile1.html" class="text-white hover:text-gray-300">Home</a>
+                <a href="gameconnector.html" class="text-white hover:text-gray-300">Games</a>
+                <a href="profile2.html" class="text-white hover:text-gray-300">Shravan</a>
+        
+                <a href="list.html" class="text-white hover:text-gray-300">My List</a>
+            </div>
+            <div class="flex items-center space-x-2">
+                <i data-feather="bell" class="text-white h-5 w-5"></i>
+                <img src="mrudula_profile1.jpg" alt="Profile" class="h-8 w-8 rounded">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center">
+        <div class="absolute inset-0 hero-gradient z-10"></div>
+        <img src="profile1bg.jpg" alt="Featured Show" class="absolute inset-0 w-full h-full object-cover">
+        <div class="relative z-20 px-8 md:px-16 max-w-4xl text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4" data-aos="fade-up">It's your Bday Mrudula! Wohoo!</h1>
+            <p class="text-xl md:text-2xl mb-6" data-aos="fade-up" data-aos-delay="100">20 years! (inlc 1.5 years with this guy!)</p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="200">
+                <button onclick="window.location.href='mainvideo.html';" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded font-semibold flex items-center justify-center">
+                    <i data-feather="play" class="mr-2"></i> A Video? Yes Please
+                </button>
+                <button onclick="window.location.href='whatsnext.html';" class="bg-gray-600 hover:bg-gray-700 bg-opacity-70 text-white px-6 py-3 rounded font-semibold flex items-center justify-center">
+                    <i data-feather="info" class="mr-2"></i> Whats next? 
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Rows -->
+    <div class="py-12 space-y-12">
+        <!-- Popular on Mrudula's Life -->
+        <section class="px-8 md:px-16">
+            <h2 class="text-xl md:text-2xl font-bold mb-4">Popular in Mrudula's Life</h2>
+            <div class="relative">
+                <div class="scroll-container flex space-x-4 overflow-x-auto pb-4">
+                    <a href="cutie.html" 
+   class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover" 
+   style="background-image: url('pop5.jpg'); background-size: cover;">
+</a>
+
+                     <a href="hehe.html" 
+   class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover" 
+   style="background-image: url('pop2.jpg'); background-size: cover;">
+</a>
+                    <a href="confused.html" 
+   class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover" 
+   style="background-image: url('pop3.jpg'); background-size: cover;">
+</a>
+                    <a href="clumsy.html" 
+   class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover" 
+   style="background-image: url('popo4.jpg'); background-size: cover;">
+</a>
+                    <a href="sexy.html" 
+   class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover" 
+   style="background-image: url('pop1.jpg'); background-size: cover;">
+</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Continue Watching -->
+        <section class="px-8 md:px-16">
+  <h2 class="text-xl md:text-2xl font-bold mb-4">Continue Watching</h2>
+  <div class="relative">
+    <div class="scroll-container flex space-x-4 overflow-x-auto pb-4">
+
+      <!-- First card -->
+      <a href="https://youtu.be/SfZWFDs0LxA?si=CL0LQTC0WMDg-_4G" target="_blank" rel="noopener noreferrer"
+         class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover relative"
+         style="background-image: url('50grey.jpeg'); background-size: cover;">
+        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-600">
+          <div class="h-full bg-red-600" style="width: 65%"></div>
+        </div>
+      </a>
+
+      <!-- Second card -->
+      <a href="https://youtu.be/n6BVyk7hty8?si=RwJptYGGbEmlCTWx" target="_blank" rel="noopener noreferrer"
+         class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover relative"
+         style="background-image: url('50dark.jpeg'); background-size: cover;">
+        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-600">
+          <div class="h-full bg-red-600" style="width: 30%"></div>
+        </div>
+      </a>
+
+      <!-- Third card -->
+      <a href="https://youtu.be/nJCc5HRPxYA?si=0_Woi5X9UnOH40uM" target="_blank" rel="noopener noreferrer"
+         class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover relative"
+         style="background-image: url('50freed.jpeg'); background-size: cover;">
+        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-600">
+          <div class="h-full bg-red-600" style="width: 80%"></div>
+        </div>
+      </a>
+
+      <!-- Fourth card -->
+      <a href="https://www.netflix.com/watch/81245964?trackId=268410292&tctx=1%2C5%2C248e3bca-991c-43f5-bde7-a4d0ad2396b3%2C248e3bca-991c-43f5-bde7-a4d0ad2396b3%7C%3DeyJwYWdlSWQiOiI4OTBkNDY5ZS0yMTgwLTQ4ODAtYWI0Ny0yZmJjOGIyOGY2MzQvMS8vNTAvMC8wIiwibG9jYWxTZWN0aW9uSWQiOiIyIn0%3D%2C%2C%2C%2CtitlesResults%2C%2CVideo%3A81245964%2CdetailsPagePlayButton" target="_blank" rel="noopener noreferrer"
+         class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover relative"
+         style="background-image: url('365days.png'); background-size: cover;">
+        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-600">
+          <div class="h-full bg-red-600" style="width: 45%"></div>
+        </div>
+      </a>
+
+      <!-- Fourth card -->
+      <a href="https://www.netflix.com/watch/81289281?trackId=268410292&tctx=0%2C0%2Ceb683205-0da1-474c-9351-892d38519f96%2Ceb683205-0da1-474c-9351-892d38519f96%7C%3DeyJwYWdlSWQiOiI4OTBkNDY5ZS0yMTgwLTQ4ODAtYWI0Ny0yZmJjOGIyOGY2MzQvMS8vZW1pbC8wLzAiLCJsb2NhbFNlY3Rpb25JZCI6IjIifQ%3D%3D%2C%2C%2C%2C%2C81037371%2CVideo%3A81289281%2CdetailsPageEpisodePlayButton" target="_blank" rel="noopener noreferrer"
+         class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover relative"
+         style="background-image: url('emily.jpg'); background-size: cover;">
+        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-600">
+          <div class="h-full bg-red-600" style="width: 45%"></div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+       
+    <!-- Content Rows -->
+    <div class="py-12 space-y-12">
+        <!-- Popular on Mrudula's Life -->
+        <section class="px-8 md:px-16">
+            <h2 class="text-xl md:text-2xl font-bold mb-4">FACTS ABOUT MRUDULA</h2>
+            <div class="relative">
+                <div class="scroll-container flex space-x-4 overflow-x-auto pb-4">
+                    <a href="fact1.html" 
+   class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover" 
+   style="background-image: url('fact1.png'); background-size: cover;">
+</a>
+
+                     <a href="fact2.html" 
+   class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover" 
+   style="background-image: url('fact2.png'); background-size: cover;">
+</a>
+                    <a href="fact3.html" 
+   class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover" 
+   style="background-image: url('fact3.png'); background-size: cover;">
+</a>
+                    <a href="fact4.html" 
+   class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover" 
+   style="background-image: url('fact4.png'); background-size: cover;">
+</a>
+                    <a href="fact5.html" 
+   class="flex-none w-48 md:w-64 h-28 md:h-36 bg-gray-800 rounded card-hover" 
+   style="background-image: url('fact5.png'); background-size: cover;">
+</a>
+                </div>
+            </div>
+        </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-gray-500 py-12 px-8 md:px-16">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://www.instagram.com/theshravanpawar" class="hover:text-white">About Us</a></li>
+                        <li><a href="https://www.instagram.com/theshravanpawar" class="hover:text-white">Jobs</a></li>
+                        <li><a href="https://www.instagram.com/theshravanpawar" class="hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Help</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://www.instagram.com/theshravanpawar" class="hover:text-white">Account</a></li>
+                        <li><a href="https://www.instagram.com/theshravanpawar" class="hover:text-white">Plans</a></li>
+                        <li><a href="https://www.instagram.com/theshravanpawar" class="hover:text-white">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white">Privacy</a></li>
+                        <li><a href="#" class="hover:text-white">Terms</a></li>
+                        <li><a href="#" class="hover:text-white">Cookies</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Connect</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://www.instagram.com/theshravanpawar" class="hover:text-white"><i data-feather="facebook"></i></a>
+                        <a href="https://www.instagram.com/theshravanpawar" class="hover:text-white"><i data-feather="twitter"></i></a>
+                        <a href="https://www.instagram.com/theshravanpawar" class="hover:text-white"><i data-feather="instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800">
+                <p>© 2025 MANUFLIX. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        feather.replace();
+    </script>
+</body>
+</html>

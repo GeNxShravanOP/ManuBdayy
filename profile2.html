@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Watchlist Question</title>
+    <style>
+        /* Minimal Dark Theme */
+        body {
+            background-color: #1a1a1a; /* Dark gray background */
+            color: #ffffff;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Prevent scrollbars when modal is active */
+        }
+
+        /* Styling for the Pop-up Modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); /* Nearly black overlay */
+            animation: fadeIn 0.5s;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Text Style (The Question) */
+        #questionText {
+            font-size: 2.5em;
+            font-weight: 300;
+            color: #e50914; /* Netflix Red for emphasis */
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        /* Image Style (The Answer) */
+        #surpriseImage {
+            max-width: 90vw; /* Maximum width of the viewport */
+            max-height: 70vh; /* Maximum height of the viewport */
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(229, 9, 20, 0.5); /* Glowing red shadow */
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 1s ease 0.5s, transform 1s ease 0.5s; /* Delay opacity/scale transition */
+            object-fit: contain; /* Ensure the image fits without cropping (unlike full screen) */
+        }
+
+        /* Animation for fade-in */
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+    </style>
+</head>
+<body>
+
+    <div id="surpriseModal" class="modal">
+        <div id="questionText">
+            What could you think will be Shravan's watchlist?
+        </div>
+        
+        <img id="surpriseImage" src="profile2photo.jpg" alt="Surprise Watchlist Photo">
+    </div>
+
+    <script>
+        const modal = document.getElementById('surpriseModal');
+        const questionText = document.getElementById('questionText');
+        const surpriseImage = document.getElementById('surpriseImage');
+
+        // Step 1: Show the modal immediately upon page load
+        window.onload = function() {
+            modal.style.display = 'flex';
+            
+            // Step 2: Animate the text pop-up (Question)
+            setTimeout(() => {
+                questionText.style.opacity = 1;
+                questionText.style.transform = 'translateY(0)';
+            }, 300); // Wait 0.3 seconds after modal appears
+
+            // Step 3: Animate the photo pop-up (Answer)
+            setTimeout(() => {
+                surpriseImage.style.opacity = 1;
+                surpriseImage.style.transform = 'scale(1)';
+            }, 3000); // Wait 3.0 seconds (300ms for text + 2.7s for photo)
+        };
+        
+        // Note: The code is designed to only show the modal and the elements. 
+        // No close button or further interaction is included, as requested ("and that's it").
+    </script>
+</body>
+</html>
