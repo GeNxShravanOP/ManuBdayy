@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy Birthday Mrudula — Crossword</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#ff5c8a;--muted:#9aa4b2}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:#e6eef8;background:linear-gradient(135deg,#071029 0%, #0f2437 50%, #081019 100%)}
+    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:32px}
+    .card{width:100%;max-width:1100px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.03)}
+    header{display:flex;align-items:center;gap:20px}
+    .logo{width:84px;height:84px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ff9fb8);display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:22px;box-shadow:0 6px 18px rgba(255,92,138,0.18)}
+    h1{margin:0;font-size:22px}
+    p.lead{margin:6px 0 0;color:var(--muted)}
+    .content{display:grid;grid-template-columns:380px 1fr;gap:22px;margin-top:18px}
+
+    /* puzzle area */
+    .puzzle{background:rgba(255,255,255,0.02);padding:16px;border-radius:12px;min-height:420px}
+    .grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:12px}
+    .word-row{display:flex;gap:4px;align-items:center;margin-bottom:10px}
+    .hint{min-width:86px;font-size:13px;color:var(--muted)}
+    .cells{display:flex;gap:6px}
+    .cell{width:36px;height:36px;border-radius:6px;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:#dbeafe;border:1px solid rgba(255,255,255,0.04)}
+    .cell input{width:100%;height:100%;border:0;background:transparent;text-align:center;font-weight:700;font-size:18px;color:#dbeafe;outline:none}
+    .controls{display:flex;gap:8px;align-items:center;margin-top:12px}
+    button{background:var(--accent);color:white;border:0;padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+
+    /* right column */
+    .right{background:rgba(255,255,255,0.02);padding:18px;border-radius:12px}
+    .hints-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .hint-card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+    .hint-card b{display:block;margin-bottom:6px}
+    .footer-msg{margin-top:14px;color:var(--muted)}
+
+    .win{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(0deg, rgba(2,6,23,0.6), rgba(2,6,23,0.6));z-index:50;backdrop-filter:blur(3px)}
+    .win-card{background:linear-gradient(90deg,#ff9fb8,#ff5c8a);padding:30px;border-radius:16px;color:#081019;text-align:center;box-shadow:0 10px 40px rgba(255,92,138,0.18)}
+    .win-card h2{margin:0 0 8px}
+    .small{font-size:13px;color:#081019}
+
+    @media(max-width:900px){.content{grid-template-columns:1fr;}.right{order:2}.puzzle{order:1}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <div class="logo">M🎂R</div>
+        <div>
+          <h1>Happy Birthday, Mrudula!</h1>
+          <p class="lead">A crossword made with love by Shravan — type the letters into boxes. Finish all words to win!</p>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="puzzle">
+          <div style="text-align:center;margin-bottom:8px">
+            <strong style="font-size:18px">Birthday Crossword</strong>
+            <div style="font-size:12px;color:var(--muted);margin-top:6px">Click a hint on the right to highlight the row. Use keyboard — letters only.</div>
+          </div>
+
+          <div id="puzzleGrid" class="grid"></div>
+
+          <div class="controls">
+            <button id="checkBtn">Check Answers</button>
+            <button id="revealBtn" class="ghost">Reveal Answers</button>
+            <div style="flex:1"></div>
+            <div style="color:var(--muted);font-size:13px">Made crazy &amp; cute for you 💖</div>
+          </div>
+        </div>
+
+        <div class="right">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <strong>Hints</strong>
+            <span style="font-size:13px;color:var(--muted)">Tap to focus</span>
+          </div>
+          <div id="hints" class="hints-list"></div>
+          <p class="footer-msg">When you complete all words correctly, You'll WIN! Hope it's fun! 🎉</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Win overlay (hidden) -->
+  <div id="winOverlay" class="win" style="display:none">
+    <div class="win-card">
+      <h2>YOU WON! 🎉</h2>
+      <p class="small">Hope it was fun — Happy Birthday, Mrudula! Love, Shravan 💖</p>
+      <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
+        <button id="playAgain">Play Again</button>
+        <button id="closeWin" class="ghost">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="confettiCanvas" style="position:fixed;pointer-events:none;inset:0;z-index:60;display:none"></canvas>
+
+  <script>
+    // Words and hints provided by Shravan
+    const WORDS = [
+      {word: 'MRUDULA', hint: 'Bday girl?'},
+      {word: 'SHRAVAN', hint: 'Her Daddy?'},
+      {word: 'LOVE', hint: 'What\'s between us?'},
+      {word: 'APRIL', hint: 'The month we got together'},
+      {word: 'TRIMBAK', hint: 'Where did we go on 28th?'},
+      {word: 'SULA', hint: 'Our best concert together'},
+      {word: 'CHRISTMAS', hint: 'One of our best dates'},
+      {word: 'WORKSHOP', hint: 'We spent time here together at uni'},
+      {word: 'DECATHLON', hint: 'We kissed here for the first time'},
+      {word: 'SCROSS', hint: 'Shravan\'s Car name?'},
+      {word: 'KISS', hint: 'What do i want from you now? K...'},
+      {word: 'MAKEOUT', hint: 'What do we usually do in the Car?'},
+      {word: 'LONGDISTANCE', hint: 'We are in this kind of relationship'},
+      {word: 'SEXY', hint: 'What do Shravan finds you? S...?'}
+    ];
+
+    // Build a simple crossword-like area where each word is its own row of letter boxes
+    const gridEl = document.getElementById('puzzleGrid');
+    const hintsEl = document.getElementById('hints');
+
+    // Create UI rows
+    WORDS.forEach((obj, idx) => {
+      const row = document.createElement('div');
+      row.className = 'word-row';
+      row.dataset.index = idx;
+
+      const hint = document.createElement('div');
+      hint.className = 'hint';
+      hint.textContent = (idx+1) + '. ' + obj.hint;
+      hint.title = obj.word;
+      hint.style.cursor = 'pointer';
+
+      const cells = document.createElement('div');
+      cells.className = 'cells';
+
+      for (let i=0;i<obj.word.length;i++){
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        const input = document.createElement('input');
+        input.maxLength = 1;
+        input.dataset.index = idx;
+        input.dataset.pos = i;
+        input.autocomplete = 'off';
+        input.spellcheck = false;
+        cell.appendChild(input);
+        cells.appendChild(cell);
+
+        // keyboard navigation
+        input.addEventListener('input', (e)=>{
+          const val = e.target.value.toUpperCase().replace(/[^A-Z]/g,'');
+          e.target.value = val;
+          // move to next
+          if (val && e.target.parentElement.nextSibling){
+            const nextInp = e.target.parentElement.nextSibling.querySelector('input');
+            if(nextInp) nextInp.focus();
+          }
+        });
+        input.addEventListener('keydown', (e)=>{
+          if(e.key === 'Backspace' && !e.target.value){
+            // move back
+            const prev = e.target.parentElement.previousSibling;
+            if(prev){ prev.querySelector('input').focus(); }
+          }
+          if(e.key === 'ArrowRight'){
+            const next = e.target.parentElement.nextSibling;
+            if(next) next.querySelector('input').focus();
+          }
+          if(e.key === 'ArrowLeft'){
+            const prev = e.target.parentElement.previousSibling;
+            if(prev) prev.querySelector('input').focus();
+          }
+        });
+      }
+
+      row.appendChild(hint);
+      row.appendChild(cells);
+      gridEl.appendChild(row);
+
+      // also add to the right hints panel
+      const hintCard = document.createElement('div');
+      hintCard.className = 'hint-card';
+      hintCard.innerHTML = `<b>${idx+1}. ${obj.hint}</b><div style="font-size:12px;color:var(--muted)">Letters: ${obj.word.length}</div>`;
+      hintCard.dataset.index = idx;
+      hintCard.style.cursor = 'pointer';
+      hintsEl.appendChild(hintCard);
+
+      // clicking hint focuses first input
+      hintCard.addEventListener('click', ()=>{
+        const firstInput = row.querySelector('input');
+        if(firstInput) firstInput.focus();
+        // highlight the row briefly
+        row.style.boxShadow = 'inset 0 0 0 3px rgba(255,92,138,0.12)';
+        setTimeout(()=> row.style.boxShadow = '', 1000);
+      });
+      hint.addEventListener('click', ()=> hintCard.click());
+    });
+
+    // Check function
+    function getCurrentAnswers(){
+      return WORDS.map((w, idx) => {
+        const inputs = Array.from(document.querySelectorAll(`input[data-index='${idx}']`));
+        return inputs.map(i=>i.value||'').join('').toUpperCase();
+      });
+    }
+
+    function checkAll(){
+      const current = getCurrentAnswers();
+      let allCorrect = true;
+      current.forEach((ans, idx)=>{
+        const correct = WORDS[idx].word.toUpperCase();
+        const inputs = Array.from(document.querySelectorAll(`input[data-index='${idx}']`));
+        if(ans === correct){
+          inputs.forEach(i=> i.parentElement.style.background = 'linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))');
+        } else {
+          allCorrect = false;
+          inputs.forEach(i=> i.parentElement.style.background = 'rgba(255,255,255,0.02)');
+        }
+      });
+      return allCorrect;
+    }
+
+    document.getElementById('checkBtn').addEventListener('click', ()=>{
+      const ok = checkAll();
+      if(ok) showWin();
+      else {
+        // highlight wrong words with small shake
+        WORDS.forEach((w, idx)=>{
+          const ans = getCurrentAnswers()[idx];
+          if(ans !== w.word){
+            const row = document.querySelector(`.word-row[data-index='${idx}']`);
+            row.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:320});
+          }
+        });
+      }
+    });
+
+    document.getElementById('revealBtn').addEventListener('click', ()=>{
+      // reveal all answers
+      WORDS.forEach((w, idx)=>{
+        const inputs = Array.from(document.querySelectorAll(`input[data-index='${idx}']`));
+        for(let i=0;i<inputs.length;i++) inputs[i].value = w.word[i];
+      });
+      checkAll();
+      setTimeout(()=> showWin(), 400);
+    });
+
+    // Win overlay + confetti
+    const overlay = document.getElementById('winOverlay');
+    const confettiCanvas = document.getElementById('confettiCanvas');
+    function showWin(){
+      overlay.style.display = 'flex';
+      confettiCanvas.style.display = 'block';
+      startConfetti(confettiCanvas);
+    }
+    document.getElementById('closeWin').addEventListener('click', ()=>{
+      overlay.style.display = 'none'; stopConfetti(); confettiCanvas.style.display='none';
+    });
+    document.getElementById('playAgain').addEventListener('click', ()=>{
+      // clear inputs and hide
+      document.querySelectorAll('input').forEach(i=>i.value='');
+      overlay.style.display='none'; stopConfetti(); confettiCanvas.style.display='none';
+      document.querySelector('input').focus();
+    });
+
+    // Simple confetti effect
+    let confettiInterval=null;function startConfetti(c){
+      const ctx=c.getContext('2d'); function resize(){c.width=innerWidth;c.height=innerHeight;} resize(); window.addEventListener('resize',resize);
+      const pieces=[]; for(let i=0;i<150;i++) pieces.push({x:Math.random()*c.width,y:Math.random()*-c.height*2,w:6+Math.random()*8,h:8+Math.random()*12,vy:2+Math.random()*6,rot:Math.random()*360,vr:2-Math.random()*4,opacity:0.9*Math.random()});
+      confettiInterval = setInterval(()=>{
+        ctx.clearRect(0,0,c.width,c.height);
+        pieces.forEach(p=>{
+          p.y += p.vy; p.x += Math.sin(p.y/20); p.rot += p.vr;
+          ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+          ctx.fillStyle = `rgba(${Math.floor(200+55*Math.random())},${Math.floor(30+180*Math.random())},${Math.floor(100+140*Math.random())},${p.opacity})`;
+          ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+          if(p.y > c.height + 40){ p.y = -20; p.x = Math.random()*c.width; }
+        });
+      }, 33);
+    }
+    function stopConfetti(){ if(confettiInterval) clearInterval(confettiInterval);
+      confettiInterval=null; const ctx=confettiCanvas.getContext('2d'); ctx && ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+    }
+
+    // autofocus first cell
+    setTimeout(()=>{ const f = document.querySelector('input'); if(f) f.focus(); },300);
+
+    // small accessibility: press Enter on last letter of a row to jump to next row's first letter
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){
+        const el = document.activeElement;
+        if(el && el.tagName === 'INPUT'){
+          const idx = parseInt(el.dataset.index); const pos = parseInt(el.dataset.pos);
+          if(pos === WORDS[idx].word.length-1){
+            const nextRow = document.querySelector(`.word-row[data-index='${Math.min(idx+1,WORDS.length-1)}'] input`);
+            if(nextRow) nextRow.focus();
+          }
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>

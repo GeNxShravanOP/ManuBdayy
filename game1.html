@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Mrudula!</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      background-color: #fce4ec;
+    }
+    #game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(to bottom, #ffebee, #f8bbd0);
+    }
+    #bike {
+      position: absolute;
+      width: 200px;
+      height: 160px;
+      background-image: url('gamepng.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      bottom: 50px;
+      left: 50px;
+      z-index: 10;
+      transition: transform 0.1s;
+    }
+    .obstacle {
+      position: absolute;
+      width: 60px;
+      height: 40px;
+      background-color: #e91e63;
+      border-radius: 10px;
+      bottom: 50px;
+      z-index: 5;
+    }
+    #score-display {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      color: #d81b60;
+      font-weight: bold;
+      z-index: 20;
+    }
+    #start-screen, #end-screen, #win-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 30;
+      transition: opacity 1s ease;
+    }
+    #start-screen {
+      background-color: rgba(255, 235, 238, 0.9);
+    }
+    #end-screen {
+      background-color: rgba(255, 235, 238, 0.9);
+      display: none;
+    }
+    #win-overlay {
+      display: none;
+      background: rgba(0,0,0,0.9);
+      opacity: 0;
+      color: white;
+      flex-direction: column;
+    }
+    #win-overlay img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div id="score-display">Score: 0</div>
+    <div id="bike"></div>
+
+    <div id="start-screen" class="text-center px-4">
+      <h1 class="text-5xl font-bold text-pink-600 mb-6">Happy Birthday Mrudula!</h1>
+      <p class="text-xl text-pink-800 mb-8">
+        Help the bike reach the finish line! Collect 7 points to win!
+      </p>
+      <button
+        id="start-btn"
+        class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all transform hover:scale-105"
+      >
+        Start Game <i data-feather="play" class="ml-2"></i>
+      </button>
+      <div class="mt-8 text-pink-700">
+        <p>Use <i data-feather="arrow-up"></i> to jump</p>
+        <p>Use <i data-feather="arrow-left"></i> and <i data-feather="arrow-right"></i> to move</p>
+      </div>
+    </div>
+
+    <div id="end-screen" class="text-center px-4">
+      <h1 id="end-title" class="text-5xl font-bold text-pink-600 mb-6">Game Over!</h1>
+      <p id="end-message" class="text-2xl text-pink-800 mb-8">Try again Mrudula!</p>
+      <button
+        id="restart-btn"
+        class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-xl mt-8 transition-all transform hover:scale-105"
+      >
+        Play Again <i data-feather="refresh-cw" class="ml-2"></i>
+      </button>
+    </div>
+
+    <!-- Win overlay -->
+    <div id="win-overlay">
+      <img id="win-photo" src="game1photo.jpg" alt="Celebration Photo">
+      <h1 class="text-6xl font-bold text-white mb-6 drop-shadow-lg">🎉 You Did It Mau! 🎉</h1>
+      <p class="text-2xl mb-6">Happy Birthday! Love you... 💖</p>
+    </div>
+  </div>
+
+  <audio id="background-music" loop>
+    <source
+      src=""
+      type="audio/mpeg"
+    />
+  </audio>
+  <audio id="win-sound">
+    <source src="game1audio.mp3" type="audio/mpeg" />
+  </audio>
+  <audio id="jump-sound">
+    <source
+      src=""
+      type="audio/mpeg"
+    />
+  </audio>
+
+  <script>
+    feather.replace();
+
+    const gameContainer = document.getElementById("game-container");
+    const bike = document.getElementById("bike");
+    const startScreen = document.getElementById("start-screen");
+    const endScreen = document.getElementById("end-screen");
+    const startBtn = document.getElementById("start-btn");
+    const restartBtn = document.getElementById("restart-btn");
+    const scoreDisplay = document.getElementById("score-display");
+    const bgMusic = document.getElementById("background-music");
+    const winSound = document.getElementById("win-sound");
+    const jumpSound = document.getElementById("jump-sound");
+    const winOverlay = document.getElementById("win-overlay");
+    const winPhoto = document.getElementById("win-photo");
+
+    let gameRunning = false;
+    let score = 0;
+    let bikePosition = 50;
+    let bikeBottom = 50;
+    let isJumping = false;
+    let obstacles = [];
+    let gameSpeed = 5;
+    let gameLoop;
+
+    document.addEventListener("keydown", (e) => {
+      if (!gameRunning) return;
+
+      switch (e.key) {
+        case "ArrowLeft":
+          bikePosition = Math.max(20, bikePosition - 20);
+          bike.style.left = bikePosition + "px";
+          break;
+        case "ArrowRight":
+          bikePosition = Math.min(window.innerWidth - 200, bikePosition + 20);
+          bike.style.left = bikePosition + "px";
+          break;
+        case "ArrowUp":
+          jump();
+          break;
+      }
+    });
+
+    function jump() {
+      if (!isJumping) {
+        isJumping = true;
+        jumpSound.currentTime = 0;
+        jumpSound.play();
+
+        let jumpHeight = 0;
+        let goingUp = true;
+
+        const jumpInterval = setInterval(() => {
+          if (goingUp) {
+            jumpHeight += 18;
+            bikeBottom = 50 + jumpHeight;
+            bikePosition = Math.min(window.innerWidth - 200, bikePosition + 10);
+            bike.style.bottom = bikeBottom + "px";
+            bike.style.left = bikePosition + "px";
+            bike.style.transform = "rotate(-12deg)";
+
+            if (jumpHeight >= 280) goingUp = false;
+          } else {
+            jumpHeight -= 14;
+            bikeBottom = 50 + jumpHeight;
+            bikePosition = Math.min(window.innerWidth - 200, bikePosition + 6);
+            bike.style.bottom = bikeBottom + "px";
+            bike.style.left = bikePosition + "px";
+            bike.style.transform = "rotate(12deg)";
+
+            if (jumpHeight <= 0) {
+              clearInterval(jumpInterval);
+              bikeBottom = 50;
+              bike.style.bottom = "50px";
+              bike.style.transform = "rotate(0deg)";
+              isJumping = false;
+            }
+          }
+        }, 20);
+      }
+    }
+
+    startBtn.addEventListener("click", () => {
+      startScreen.style.display = "none";
+      gameRunning = true;
+      score = 0;
+      scoreDisplay.textContent = "Score: " + score;
+      bikePosition = 50;
+      bike.style.left = bikePosition + "px";
+      bike.style.bottom = "50px";
+      obstacles.forEach((o) => o.remove());
+      obstacles = [];
+      bgMusic.currentTime = 0;
+      bgMusic.play();
+      startObstacles();
+      gameLoop = setInterval(updateGame, 20);
+    });
+
+    restartBtn.addEventListener("click", () => {
+      endScreen.style.display = "none";
+      startScreen.style.display = "flex";
+    });
+
+    function startObstacles() {
+      function nextObstacle() {
+        if (!gameRunning) return;
+        createObstacle();
+        const delay = Math.random() * 2000 + 3000;
+        setTimeout(nextObstacle, delay);
+      }
+      nextObstacle();
+    }
+
+    function createObstacle() {
+      const obstacle = document.createElement("div");
+      obstacle.className = "obstacle";
+      obstacle.style.left = window.innerWidth + "px";
+      obstacle.style.bottom = "50px";
+      const obstacleHeight = Math.floor(Math.random() * 30) + 30;
+      obstacle.style.height = obstacleHeight + "px";
+      gameContainer.appendChild(obstacle);
+      obstacles.push(obstacle);
+    }
+
+    function updateGame() {
+      obstacles.forEach((obstacle, index) => {
+        const obstacleLeft = parseInt(obstacle.style.left);
+        obstacle.style.left = obstacleLeft - gameSpeed + "px";
+
+        if (obstacleLeft < -100) {
+          obstacle.remove();
+          obstacles.splice(index, 1);
+          score++;
+          scoreDisplay.textContent = "Score: " + score;
+          if (score % 5 === 0) gameSpeed += 0.5;
+        }
+
+        const obstacleRect = obstacle.getBoundingClientRect();
+        const bikeRect = bike.getBoundingClientRect();
+
+        const overlapX =
+          bikeRect.right - 25 > obstacleRect.left &&
+          bikeRect.left + 25 < obstacleRect.right;
+        const overlapY =
+          bikeRect.bottom - 10 > obstacleRect.top &&
+          bikeRect.top + 20 < obstacleRect.bottom;
+
+        if (overlapX && overlapY && bikeBottom <= 80) {
+          gameOver();
+        }
+      });
+
+      if (score >= 7) winGame();
+    }
+
+    function gameOver() {
+      clearInterval(gameLoop);
+      gameRunning = false;
+      bgMusic.pause();
+      document.getElementById("end-title").textContent = "Game Over!";
+      document.getElementById("end-message").textContent =
+        "Try again Mrudula!";
+      setTimeout(() => (endScreen.style.display = "flex"), 500);
+    }
+
+    function winGame() {
+      clearInterval(gameLoop);
+      gameRunning = false;
+      bgMusic.pause();
+
+      // Smooth fade to win overlay
+      winPhoto.src = "game1photo.jpg"; // Replace with your image
+      winOverlay.style.display = "flex";
+      setTimeout(() => {
+        winOverlay.style.opacity = "1";
+      }, 100);
+
+      winSound.currentTime = 0;
+      winSound.play();
+    }
+  </script>
+</body>
+</html>
