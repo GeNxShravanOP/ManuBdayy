@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mrudula Intro</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      flex-direction: column;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Start screen */
+    #startScreen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: black;
+    }
+    #startBtn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #startBtn:hover {
+      background: darkred;
+    }
+
+    /* Intro */
+    #intro {
+      display: none;
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      background: black;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 5px;
+    }
+    #logoM {
+      opacity: 0;
+      transform: scale(0.8);
+      animation: zoomIn 2.5s ease forwards;
+      animation-delay: 0.5s;
+      max-width: 300px;
+      height: auto;
+    }
+    #logoText img {
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
+      animation-delay: 3s;
+      max-width: 500px;
+      height: auto;
+      margin-top: 5px;
+    }
+
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Profiles */
+    #profiles {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    #profiles h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+    .profile-list {
+      display: flex;
+      gap: 40px;
+    }
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .profile img {
+      width: 120px;
+      height: 120px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    .profile:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 20px red;
+    }
+    .profile span {
+      margin-top: 10px;
+    }
+    .profile-list a {
+  text-decoration: none;
+  color: inherit;
+}
+
+  </style>
+</head>
+<body>
+  <!-- Start Screen -->
+  <div id="startScreen">
+    <button id="startBtn">Start</button>
+  </div>
+
+  <!-- Intro Animation -->
+  <div id="intro">
+    <img id="logoM" src="M_logo.jpg" alt="M Logo">
+    <div id="logoText"><img src="Mrudula_logo.png" alt="Mrudula Logo"></div>
+    <audio id="introSound" src="netflix-sound.mp3"></audio>
+  </div>
+
+  <!-- Profiles Page -->
+<div id="profiles">
+  <h1>Who's watching?</h1>
+  <div class="profile-list">
+    <a href="profile1.html" class="profile">
+      <img src="Mau_logo.jpg" alt="Profile 1">
+      <span>Mrudula</span>
+    </a>
+    <a href="profile2.html" class="profile">
+      <img src="Mau_logo.jpg" alt="Profile 2">
+      <span>Shravan</span>
+    </a>
+    <a href="profile3.html" class="profile">
+      <img src="Mau_logo.jpg" alt="Profile 3">
+      <span>Guest</span>
+    </a>
+  </div>
+</div>
+
+
+  <script>
+    const startBtn = document.getElementById("startBtn");
+    const startScreen = document.getElementById("startScreen");
+    const intro = document.getElementById("intro");
+    const profiles = document.getElementById("profiles");
+    const introSound = document.getElementById("introSound");
+
+    startBtn.addEventListener("click", () => {
+      startScreen.style.display = "none";
+      intro.style.display = "flex";
+
+      // ensure sound is loaded and try to play
+      introSound.load();
+      introSound.play().catch(err => {
+        console.log("Autoplay blocked, user must interact:", err);
+      });
+
+      // After 6s, show profiles
+      setTimeout(() => {
+        intro.style.display = "none";
+        profiles.style.display = "flex";
+      }, 6000);
+    });
+  </script>
+</body>
+</html>

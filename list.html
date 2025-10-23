@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Next Chapter - Dynamic List</title>
+    <style>
+        /* ---------------------------------- */
+        /* CSS for Netflix-Inspired Dark Theme */
+        /* ---------------------------------- */
+        body {
+            background-color: #141414; /* Netflix dark background */
+            color: #E5E5E5; /* Light text */
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        h1 {
+            color: #E50914; /* Netflix red */
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+        }
+
+        #startButton {
+            background-color: #E50914;
+            color: #FFFFFF;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.1s;
+        }
+
+        #startButton:hover {
+            background-color: #F40612;
+            transform: scale(1.05);
+        }
+
+        #dynamicList {
+            list-style: none;
+            padding: 0;
+            margin-top: 50px;
+            width: 80%;
+            max-width: 600px;
+            text-align: left;
+        }
+
+        #dynamicList li {
+            font-size: 1.5em;
+            font-weight: 500;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(50, 50, 50, 0.7);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        #dynamicList li.highlight {
+            font-size: 2.5em;
+            color: #E50914;
+            font-weight: 700;
+        }
+
+        /* ---------------------------------- */
+        /* FULL-SCREEN Modal Styling */
+        /* ---------------------------------- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0,0,0,0.95);
+            animation: fadeIn 0.5s;
+        }
+
+        .modal-content {
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: none;
+            border: none;
+            position: relative;
+            display: flex; /* Centers the text overlay */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* ✅ FIX: Ensures vertical image fills horizontal screen without distortion (will crop top/bottom) */
+            position: absolute; /* ✅ FIX: Layers image behind text and allows it to fill the modal */
+            top: 0;
+            left: 0;
+            filter: brightness(70%);
+        }
+        
+        /* Text overlay for the full-screen image */
+        #textOverlay {
+            z-index: 2; /* Stays above the image */
+            color: white;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            max-width: 80%;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #aaa;
+            font-size: 40px;
+            font-weight: bold;
+            z-index: 3;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #E50914;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Your Next Adventure Awaits...</h1>
+    <h2>Click below to reveal the path!</h2>
+
+    <button id="startButton">
+        START THE JOURNEY
+    </button>
+
+    <ul id="dynamicList">
+        </ul>
+
+    <div id="photoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <img id="modalImage" src="newyorkpic.png" alt="New York City Skyline">
+            
+            <div id="textOverlay">
+                <p>Welcome to New York! Your new beginning is here.</p>
+            </div>
+
+            </div>
+    </div>
+    
+    <audio id="cityAudio" src="newyork.mp3" preload="auto"></audio>
+
+    <script>
+        // ----------------------------------
+        // JavaScript for Dynamic List & Popup
+        // ----------------------------------
+        
+        const listItems = [
+            "1. Germany", 
+            "2. Masters", 
+            "3. Job", 
+            "4. New York" 
+        ];
+        
+        const listContainer = document.getElementById('dynamicList');
+        const startButton = document.getElementById('startButton');
+        const modal = document.getElementById('photoModal');
+        const closeModal = document.getElementsByClassName("close")[0];
+        const cityAudio = document.getElementById('cityAudio');
+        
+        /**
+         * The core function to reveal list items one by one.
+         */
+        function revealList() {
+            startButton.style.display = 'none'; // Hide button after click
+            
+            listItems.forEach((text, index) => {
+                // Use a slight delay for the sequential effect
+                setTimeout(() => {
+                    const li = document.createElement('li');
+                    li.textContent = text;
+                    
+                    if (text.includes("New York")) {
+                        li.classList.add('highlight'); // Apply the big/red style
+                    }
+                    
+                    listContainer.appendChild(li);
+                    
+                    // Trigger the CSS transition for fade-in effect
+                    requestAnimationFrame(() => {
+                        li.style.opacity = 1;
+                        li.style.transform = 'translateY(0)';
+                    });
+
+                    // After the last item appears, show the popup and attempt to play audio
+                    if (index === listItems.length - 1) {
+                        // Delay the modal slightly after the last item is visible
+                        setTimeout(() => {
+                            modal.style.display = 'block'; 
+                            
+                            // Attempt to autoplay the audio immediately (may be blocked by browser)
+                            cityAudio.play().catch(error => {
+                                console.error("Audio Autoplay Blocked. User interaction is required for media playback.", error);
+                            });
+
+                        }, 1000); 
+                    }
+                }, index * 1000); // 1-second delay between each item
+            });
+        }
+
+        // --- Event Listeners ---
+
+        // 1. Initial button click to start the sequence
+        startButton.addEventListener('click', revealList);
+
+        // 2. Close the modal on 'x' click
+        closeModal.onclick = function() {
+            modal.style.display = "none";
+            cityAudio.pause(); // Stop audio when closing
+            cityAudio.currentTime = 0;
+        }
+
+        // 3. Close the modal on outside click (or by pressing ESC key)
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                cityAudio.pause(); // Stop audio when closing
+                cityAudio.currentTime = 0;
+            }
+        }
+    </script>
+</body>
+</html>
