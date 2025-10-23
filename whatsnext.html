@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What's Next</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      overflow: hidden;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    #logo {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 100px;
+      height: auto;
+    }
+
+    .fadeText {
+      opacity: 0;
+      font-size: 2em;
+      text-align: center;
+      transition: opacity 1s ease-in-out;
+      position: absolute;
+    }
+
+    #finalBtn {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 25px;
+      font-size: 20px;
+      background: white;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #finalBtn:hover {
+      background: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo -->
+  <img id="logo" src="Mrudula_logo.png" alt="Logo">
+
+  <!-- Texts sequence -->
+  <div id="text1" class="fadeText">Marry me?</div>
+  <div id="text2" class="fadeText">No?</div>
+  <div id="text3" class="fadeText">Is it too early?</div>
+  <div id="text4" class="fadeText">Lol I am joking...</div>
+  <div id="text5" class="fadeText">It cant be this simple to propose you!</div>
+  <div id="text6" class="fadeText">It will be great and you should?</div>
+  <div id="text7" class="fadeText">Wait for it, cuz it will be?</div>
+
+  <!-- Final button -->
+  <button id="finalBtn">Play? 🎶</button>
+
+  <!-- Audio -->
+  <audio id="surpriseAudio">
+    <source src="legendery.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const texts = [
+      document.getElementById("text1"),
+      document.getElementById("text2"),
+      document.getElementById("text3"),
+      document.getElementById("text4"),
+      document.getElementById("text5"),
+      document.getElementById("text6"),
+      document.getElementById("text7")
+    ];
+    const finalBtn = document.getElementById("finalBtn");
+    const audio = document.getElementById("surpriseAudio");
+
+    function showSequence() {
+      let delay = 0;
+      texts.forEach((text, index) => {
+        setTimeout(() => {
+          text.style.opacity = 1;
+        }, delay);
+
+        setTimeout(() => {
+          text.style.opacity = 0;
+        }, delay + 2000);
+
+        delay += 3000; // 3 seconds per text
+      });
+
+      // Show button after last text
+      setTimeout(() => {
+        finalBtn.style.display = "block";
+      }, delay + 1000);
+    }
+
+    showSequence();
+
+    finalBtn.addEventListener("click", () => {
+      audio.play();
+    });
+  </script>
+</body>
+</html>
