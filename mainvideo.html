@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Special Vertical Video</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Ensures HTML and body cover the entire viewport */
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Hide scrollbars */
+        }
+
+        /* Custom, vibrant gradient background */
+        .bright-background {
+            /* A cheerful gradient from pink, through orange, to yellow */
+            background: linear-gradient(135deg, #FFDDE1 0%, #FFB69B 50%, #FFECD2 100%);
+        }
+
+        /* Video container styling: prioritizes height and centers content */
+        .video-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Video element styling */
+        #verticalVideo {
+            /* Maximize vertical screen space */
+            max-height: 98vh; 
+            /* Let the width be determined by the natural vertical aspect ratio */
+            width: auto; 
+            /* Ensure the content is fully visible (contain), showing the background on the sides */
+            object-fit: contain; 
+            
+            border-radius: 1.5rem; /* Large rounded corners */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2); /* Deep shadow */
+            background-color: black; /* Fills empty vertical bars of the video itself */
+        }
+
+        /* Responsive adjustments for very small screens (portrait view on phones) */
+        @media (max-width: 640px) and (orientation: portrait) {
+            #verticalVideo {
+                max-width: 98vw;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body class="bright-background">
+
+    <div class="video-container">
+        <!-- 
+            The video tag configuration:
+            - controls: Shows standard play/pause, volume, fullscreen buttons.
+            - autoplay: Starts playback immediately upon loading.
+            - playsinline: Required for autoplay on most mobile browsers.
+            
+            NOTE: You must rename your video file to 'your_vertical_video.mp4'
+        -->
+        <video id="verticalVideo" controls autoplay playsinline muted>
+            <source src="mainvideo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <script>
+        // JavaScript to handle the initial mute/unmute if autoplay is blocked
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('verticalVideo');
+            
+            // Try to play the video (it starts muted for better browser compatibility)
+            video.play().catch(error => {
+                // If autoplay is blocked (common in browsers), let the user know
+                console.log("Autoplay failed:", error);
+                
+                // You can optionally add a non-alert message here asking the user to tap to play
+            });
+            
+            // Note: I included 'muted' in the video tag as browsers often block unmuted autoplay. 
+            // The user can unmute using the standard controls.
+        });
+    </script>
+</body>
+</html>
