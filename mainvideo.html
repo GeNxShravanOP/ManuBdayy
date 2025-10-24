@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Special Vertical Video</title>
+    <title>Watch Your Special Video</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Ensures HTML and body cover the entire viewport */
@@ -28,62 +28,50 @@
             align-items: center;
         }
 
-        /* Video element styling */
-        #verticalVideo {
-            /* Maximize vertical screen space */
-            max-height: 98vh; 
-            /* Let the width be determined by the natural vertical aspect ratio */
-            width: auto; 
-            /* Ensure the content is fully visible (contain), showing the background on the sides */
-            object-fit: contain; 
-            
-            border-radius: 1.5rem; /* Large rounded corners */
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2); /* Deep shadow */
-            background-color: black; /* Fills empty vertical bars of the video itself */
+        /* New Button Styling (Prominent and Centered) */
+        .play-button-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            background-color: #e50914; /* Vibrant Red */
+            border-radius: 9999px; /* Pill shape */
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.5);
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+            cursor: pointer;
         }
 
-        /* Responsive adjustments for very small screens (portrait view on phones) */
-        @media (max-width: 640px) and (orientation: portrait) {
-            #verticalVideo {
-                max-width: 98vw;
-                height: auto;
-            }
+        .play-button-link:hover {
+            background-color: #ff2d4a;
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(229, 9, 20, 0.7);
         }
+
+        /* Removed unused #verticalVideo CSS */
     </style>
 </head>
 <body class="bright-background">
 
     <div class="video-container">
         <!-- 
-            The video tag configuration:
-            - controls: Shows standard play/pause, volume, fullscreen buttons.
-            - autoplay: Starts playback immediately upon loading.
-            - playsinline: Required for autoplay on most mobile browsers.
+            Replaced the video element with a prominent button (styled anchor tag) 
+            that opens the YouTube link in a new tab.
             
-            NOTE: You must rename your video file to 'your_vertical_video.mp4'
+            IMPORTANT: Change the 'href' value below to your actual YouTube link!
         -->
-        <video id="verticalVideo" controls autoplay playsinline muted>
-            <source src="mainvideo.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <a href="https://youtu.be/2ZZwAmA7pV8" 
+           target="_blank" 
+           class="play-button-link">
+            Click to Watch Your Special Video
+        </a>
     </div>
 
-    <script>
-        // JavaScript to handle the initial mute/unmute if autoplay is blocked
-        document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('verticalVideo');
-            
-            // Try to play the video (it starts muted for better browser compatibility)
-            video.play().catch(error => {
-                // If autoplay is blocked (common in browsers), let the user know
-                console.log("Autoplay failed:", error);
-                
-                // You can optionally add a non-alert message here asking the user to tap to play
-            });
-            
-            // Note: I included 'muted' in the video tag as browsers often block unmuted autoplay. 
-            // The user can unmute using the standard controls.
-        });
-    </script>
+    <!-- The script block for video autoplay handling has been removed as it is no longer needed. -->
 </body>
 </html>
